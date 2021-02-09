@@ -1,6 +1,7 @@
 
 version: '3.3'
 services: 
+        # PROJECT
         web:
                 build:
                         context: ./php        
@@ -10,8 +11,9 @@ services:
                         - ./php:/var/www/html/
                 ports:
                         - 8000:80
-                dns:
-                        - 8.8.8.8
+                links: 
+                        - db
+        # DATABASE
         db: 
                 container_name: mysql8
                 image: mysql:8.0
@@ -24,4 +26,20 @@ services:
                         MYSQL_PASSWORD: devpass
                 ports: 
                         - 6033:3306
+        # PHP MY ADMIN
+        phpmyadmin:
+                depends_on: 
+                        - db
+                container_name: phpmyadmin
+                image: phpmyadmin/phpmyadmin
+                restart: always
+                environment: 
+                        MYSQL_ROOT_PASSWORD: root
+                        PMA_HOST: db
+                        PMA_PORT: 3306
+                        PMA_ARBITARY: 1
+                ports: 
+                        - 8080:80
+                links: 
+                        - db
 
