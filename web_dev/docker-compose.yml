@@ -1,6 +1,17 @@
 
 version: '3.3'
 services: 
+
+# COMPOSER 
+composer:
+        container_name: app_package_manager
+        image: composer:1.9
+        command: ['composer', 'install']
+        restart: 'no'
+        volumes: 
+                - ./app
+
+
         # PROJECT
         web:
                 build:
@@ -11,8 +22,12 @@ services:
                         - ./php:/var/www/html/
                 ports:
                         - 8000:80
-                links: 
+                depends_on:
                         - db
+                network: 
+                        backend:
+                                aliases:
+                                        - web
         # DATABASE
         db: 
                 container_name: mysql8
@@ -26,6 +41,10 @@ services:
                         MYSQL_PASSWORD: devpass
                 ports: 
                         - 6033:3306
+                network: 
+                        backend:
+                                aliases:
+                                        - db
         # PHP MY ADMIN
         phpmyadmin:
                 depends_on: 
@@ -40,6 +59,13 @@ services:
                         PMA_ARBITARY: 1
                 ports: 
                         - 8080:80
-                links: 
-                        - db
+                network: 
+                        backend:
+                                aliases:
+                                        - phpmyadmin
 
+
+
+#networks: 
+    backend: 
+        name: lampp
