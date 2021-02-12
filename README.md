@@ -12,3 +12,6 @@
 
 5. You can also change the ``composer`` or ``npm`` command in the ``docker-compose.yml`` file
 
+6. About the PORTS
+    * For your Application go to ``localhost:8000``
+    * For PhpMyAdmin go to ``localhost:8080``
