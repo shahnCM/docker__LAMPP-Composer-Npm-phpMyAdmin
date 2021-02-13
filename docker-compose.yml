@@ -19,7 +19,7 @@ services:
         networks: 
             fullstack:
                 aliases: 
-                    - gitphpmyadmin 
+                    - phpmyadmin 
 
     # WEB
     web:
@@ -72,7 +72,7 @@ services:
         networks: 
             fullstack:
                 aliases: 
-                    - npm  
+                    - composer  
 
     # NPM
     npm: 
@@ -106,7 +106,7 @@ services:
         networks: 
             fullstack:
                 aliases: 
-                    - npm                        
+                    - artisan                        
                 
 # NETWORKS: 
 networks:
