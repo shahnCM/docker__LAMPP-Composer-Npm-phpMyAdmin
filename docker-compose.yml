@@ -53,7 +53,8 @@ services:
     # WEB
     web:
         container_name: php73
-        depends_on: db
+        depends_on: 
+            - db
         build:
             context: ./    
             dockerfile: Dockerfile
