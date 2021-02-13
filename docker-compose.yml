@@ -7,31 +7,51 @@ services:
         container_name: composer
         depends_on: 
             - web
-        image: composer:1.9
-        command: ['composer', 'install']
+        image: composer:latest
         restart: 'no'
         working_dir: /var/www/html
         volumes: 
             - ./:/var/www/html
+        entrypoint: ['composer']
+        command: ['composer', 'install']  
+        networks: 
+            fullstack:
+                aliases: 
+                    - npm  
 
     # NPM
     npm: 
         container_name: npm
-        depends_on: composer
+        depends_on: 
+            - web
         image: node:14
         restart: 'no'
         working_dir: /var/www/html
         volumes: 
             - ./:/var/www/html
+        entrypoint: ['npm']    
         command: ['npm', 'install']
-        ports: 
-            - 3000:80
-        depends_on: 
-            - web
         networks: 
             fullstack:
                 aliases: 
                     - npm
+
+    # ARTISAN
+    artisan:
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        container_name: artisan
+        depends_on:
+            - db
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+        entrypoint: ['/var/www/html/artisan']
+        networks: 
+            fullstack:
+                aliases: 
+                    - npm    
 
     # PHP
     phpmyadmin: 
