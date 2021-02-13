@@ -15,3 +15,8 @@
 6. About the PORTS
     * For your Application go to ``localhost:8000``
     * For PhpMyAdmin go to ``localhost:8080``
+
+7. About Composer, Npm, Artisan Command
+    * docker-compose run --rm npm <command>
+    * docker-compose run --rm composer <command>
+    * docker-compose run --rm artisan <command>
