@@ -21,3 +21,10 @@
     * ```docker-compose run --rm php <command>```
     * ```docker-compose run --rm composer <command>```
     * ```docker-compose run --rm artisan <command>```
+
+8. Some Important Docker Command
+    * ```docker system df``` 
+    * ```docker system prune -a```
+    * ```docker image prune -a```
+    * ```docker container prune -a```
+    * ```docker volume prune```
