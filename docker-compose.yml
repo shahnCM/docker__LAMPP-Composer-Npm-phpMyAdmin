@@ -2,42 +2,19 @@ version: '3.3'
 
 services:
 
-    # PHP
-    phpmyadmin: 
-        container_name: phpmyadmin
-        depends_on: 
-            - db
-        image: phpmyadmin/phpmyadmin
-        restart: 'always'
-        environment: 
-            MYSQL_ROOT_PASSWORD: root
-            PMA_HOST: db
-            PMA_PORT: 3306
-            PMA_ARBITARY: 1
-        ports: 
-            - 8080:80
-        networks: 
-            fullstack:
-                aliases: 
-                    - phpmyadmin 
-
-    # WEB
-    web:
-        container_name: php73
-        depends_on: 
-            - db
-        build:
-            context: ./    
-            dockerfile: Dockerfile
+    # PHP Cli
+    php: 
+        container_name: php_cli
+        image: php:7.3-cli
+        restart: 'no'
         working_dir: /var/www/html
         volumes: 
-            - ./:/var/www/html/
-        ports: 
-            - 8000:80
+            - ./:/var/www/html
+        entrypoint: ['php']    
         networks: 
             fullstack:
                 aliases: 
-                    - web        
+                    - php   
 
     # DATABASE
     db: 
@@ -55,11 +32,48 @@ services:
         networks: 
             fullstack:
                 aliases: 
-                    - db   
+                    - db
 
-    # COMPOSER
+    # PHP MyAdmin
+    phpmyadmin: 
+        container_name: php_myadmin
+        depends_on: 
+            - db
+        image: phpmyadmin/phpmyadmin
+        restart: 'always'
+        environment: 
+            MYSQL_ROOT_PASSWORD: root
+            PMA_HOST: db
+            PMA_PORT: 3306
+            PMA_ARBITARY: 1
+        ports: 
+            - 8080:80
+        networks: 
+            fullstack:
+                aliases: 
+                    - phpmyadmin 
+
+    # Apache WEB Server on Php 7.3.3
+    web:
+        container_name: apache_php73
+        depends_on: 
+            - db
+        build:
+            context: ./    
+            dockerfile: Dockerfile
+        working_dir: /var/www/html
+        volumes: 
+            - ./:/var/www/html/
+        ports: 
+            - 8000:80
+        networks: 
+            fullstack:
+                aliases: 
+                    - web           
+
+    # COMPOSER 1.9
     composer:
-        container_name: composer
+        container_name: composer_19
         depends_on: 
             - web
         image: composer:latest
@@ -74,9 +88,9 @@ services:
                 aliases: 
                     - composer  
 
-    # NPM
-    npm: 
-        container_name: npm
+    # NodeJs 14 with NPM
+    node: 
+        container_name: node_14
         depends_on: 
             - web
         image: node:14
@@ -89,26 +103,26 @@ services:
         networks: 
             fullstack:
                 aliases: 
-                    - npm
+                    - node
 
     # ARTISAN ; Uncomment only if './' has an existing Laravel Project
-    artisan:
-        build:
-            context: ./
-            dockerfile: Dockerfile
-        container_name: artisan
-        depends_on:
-            - db
-        working_dir: /var/www/html/
-        volumes:
-            - ./:/var/www/html
-        entrypoint: ['/var/www/html/artisan']
-        networks: 
-            fullstack:
-                aliases: 
-                    - artisan                        
+    # artisan:
+    #     build:
+    #         context: ./
+    #         dockerfile: Dockerfile
+    #     container_name: artisan
+    #     depends_on:
+    #         - db
+    #     working_dir: /var/www/html/
+    #     volumes:
+    #         - ./:/var/www/html
+    #     entrypoint: ['/var/www/html/artisan']
+    #     networks: 
+    #         fullstack:
+    #             aliases: 
+    #                 - artisan 
                 
 # NETWORKS: 
 networks:
     fullstack: 
-        name: lampp                
+        name: local                

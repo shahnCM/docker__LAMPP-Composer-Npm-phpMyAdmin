@@ -18,5 +18,6 @@
 
 7. About Composer, Npm, Artisan Command
     * ```docker-compose run --rm npm <command>```
+    * ```docker-compose run --rm php <command>```
     * ```docker-compose run --rm composer <command>```
     * ```docker-compose run --rm artisan <command>```
