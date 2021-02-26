@@ -2,20 +2,6 @@ version: '3.3'
 
 services:
 
-    # PHP Cli
-    php: 
-        container_name: php_cli
-        image: php:7.3-cli
-        restart: 'no'
-        working_dir: /var/www/html
-        volumes: 
-            - ./:/var/www/html
-        entrypoint: ['php']    
-        networks: 
-            fullstack:
-                aliases: 
-                    - php   
-
     # DATABASE
     db: 
         container_name: mysql8
@@ -54,34 +40,30 @@ services:
                     - phpmyadmin 
 
     # Apache WEB Server on Php 7.3.3
-    web:
+    php:
         container_name: apache_php73
-        depends_on: 
-            - db
         build:
             context: ./    
             dockerfile: Dockerfile
         working_dir: /var/www/html
         volumes: 
-            - ./:/var/www/html/
+            - ./${DIR}:/var/www/html/
         ports: 
             - 8000:80
+        entrypoint: ['php']     
         networks: 
             fullstack:
                 aliases: 
-                    - web           
+                    - php           
 
     # COMPOSER 1.9
     composer:
         container_name: composer_19
-        depends_on: 
-            - web
-        image: composer:latest
+        image: composer:1.9
         restart: 'no'
         working_dir: /var/www/html
         volumes: 
-            - ./:/var/www/html
-        # command: ['composer', 'install']     
+            - ./:/var/www/html    
         entrypoint: ['composer'] 
         networks: 
             fullstack:
@@ -91,14 +73,11 @@ services:
     # NodeJs 14 with NPM
     node: 
         container_name: node_14
-        depends_on: 
-            - web
         image: node:14
         restart: 'no'
         working_dir: /var/www/html
         volumes: 
             - ./:/var/www/html
-        command: ['npm', 'install']
         entrypoint: ['npm']    
         networks: 
             fullstack:

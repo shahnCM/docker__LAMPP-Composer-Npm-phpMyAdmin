@@ -3,6 +3,7 @@
 FROM php:7.3.3-apache
 ## Linux Command
 # RUN apt-get update && apt-get upgrade- y
+RUN apt-get install curl
 ## Installing PHP Extensions
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 ## Enableing .htaccess MOD REWRITE
