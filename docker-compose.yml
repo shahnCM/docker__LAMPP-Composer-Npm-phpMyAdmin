@@ -40,21 +40,21 @@ services:
                     - phpmyadmin 
 
     # Apache WEB Server on Php 7.3.3
-    php:
+    apache:
         container_name: apache_php73
         build:
             context: ./    
             dockerfile: Dockerfile
+        restart: 'always'    
         working_dir: /var/www/html
         volumes: 
             - ./${DIR}:/var/www/html/
         ports: 
-            - 8000:80
-        entrypoint: ['php']     
+            - 8000:80   
         networks: 
             fullstack:
                 aliases: 
-                    - php           
+                    - apache           
 
     # COMPOSER 1.9
     composer:
@@ -83,6 +83,22 @@ services:
             fullstack:
                 aliases: 
                     - node
+
+    # PHP Cli
+    php: 
+        container_name: php
+        restart: 'no'
+        build:
+            context: ./    
+            dockerfile: Dockerfile
+        working_dir: /var/www/html
+        volumes: 
+            - ./${DIR}:/var/www/html
+        entrypoint: ['php']    
+        networks: 
+            fullstack:
+                aliases: 
+                    - php  
 
     # ARTISAN ; Uncomment only if './' has an existing Laravel Project
     # artisan:
