@@ -63,7 +63,7 @@ services:
         restart: 'no'
         working_dir: /var/www/html
         volumes: 
-            - ./:/var/www/html    
+            - ./${DIR}:/var/www/html    
         entrypoint: ['composer'] 
         networks: 
             fullstack:
@@ -77,7 +77,7 @@ services:
         restart: 'no'
         working_dir: /var/www/html
         volumes: 
-            - ./:/var/www/html
+            - ./${DIR}:/var/www/html
         entrypoint: ['npm']    
         networks: 
             fullstack:
@@ -110,7 +110,7 @@ services:
     #         - db
     #     working_dir: /var/www/html/
     #     volumes:
-    #         - ./:/var/www/html
+    #         - ./${DIR}:/var/www/html
     #     entrypoint: ['/var/www/html/artisan']
     #     networks: 
     #         fullstack:
