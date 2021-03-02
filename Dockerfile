@@ -1,6 +1,6 @@
 
 ## Image
-FROM php:7.3.3-apache
+FROM php:7.4.15-apache
 ## Linux Command
 # RUN apt-get update && apt-get upgrade- y
 RUN apt-get install curl

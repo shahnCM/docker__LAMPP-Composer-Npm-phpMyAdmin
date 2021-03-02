@@ -35,9 +35,9 @@ services:
             MYSQL_PASSWORD: root
         ports:
             - 3306:3306
-        working_dir: /app
+        working_dir: /var/www/html
         volumes: 
-            - ./${DIR}:/app      
+            - ./${DIR}:/var/www/html      
         networks: 
             fullstack:
                 aliases: 
@@ -48,9 +48,9 @@ services:
         container_name: npm
         image: node:14.16-slim
         restart: 'no'
-        working_dir: /app
+        working_dir: /var/www/html
         volumes: 
-            - ./${DIR}:/app
+            - ./${DIR}:/var/www/html
         networks: 
             fullstack:
                 aliases: 
@@ -60,15 +60,17 @@ services:
     php: 
         container_name: php
         restart: 'no'
-        image: php:7.4.15-alpine
-        working_dir: /app
+        build:
+            context: ./    
+            dockerfile: Dockerfile
+        working_dir: /var/www/html
         volumes:
-            # - data:/app 
-            - ./${DIR}:/app   
+            - ./${DIR}:/var/www/html
+        entrypoint: ['php']     
         networks: 
             fullstack:
                 aliases: 
-                    - php 
+                    - php
                     
     # COMPOSER
     composer:
@@ -77,9 +79,9 @@ services:
             - php
         image: composer:1.9
         restart: 'no'
-        working_dir: /app
+        working_dir: /var/www/html
         volumes: 
-            - ./${DIR}:/app   
+            - ./${DIR}:/var/www/html   
         entrypoint: ['composer'] 
         networks: 
             fullstack:
